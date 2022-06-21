@@ -8,14 +8,20 @@ export default function App() {
       console.log(editorRef.current.getContent());
     }
   };
+  const header =
+    "<header contenteditable='false'><div style='height: 200px; font-size: 28px'>Header Section</div></header>";
+  const footer =
+    "<footer contenteditable='false'><div style='height: 200px; font-size: 28px'>Footer Section</div></footer>";
+  const initialValue = `${header}<p>Type content here...</p>${footer}`;
   return (
     <>
       <Editor
         onInit={(evt, editor) => (editorRef.current = editor)}
-        initialValue=""
+        initialValue={initialValue}
         init={{
-          height: 500,
+          height: 800,
           menubar: false,
+          inline_styles: true,
           plugins: [
             "advlist autolink lists link image charmap print preview anchor",
             "searchreplace visualblocks code fullscreen",
