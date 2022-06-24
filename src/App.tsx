@@ -104,6 +104,7 @@ const App = () => {
                       setup: (editor) => {
                         editor.ui.registry.addMenuButton("metadata", {
                           icon: "comment-add",
+                          tooltip: "Insert dynamic content",
                           fetch: (callback) => {
                             const items: any[] = [
                               {
