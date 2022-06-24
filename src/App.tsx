@@ -34,7 +34,7 @@ const App = () => {
     "<header class='mceNonEditable'><div style='height: 150px; font-size: 28px'>Header Section</div></header>";
   const footer =
     "<footer class='mceNonEditable'><div style='height: 150px; font-size: 28px'>Footer Section</div></footer>";
-  const initialValue = `${header}<p></p><p></p>${footer}`;
+  const initialValue = `${header}<p><code>email template</code></p><p></p>${footer}`;
   return (
     <Container>
       <Formik
@@ -113,6 +113,13 @@ const App = () => {
                                 onAction: () => editor.insertContent(header),
                               },
                               {
+                                type: "menuitem",
+                                text: "Test",
+                                onAction: () => {
+                                  editor.dom.remove(editor.dom.select('code[data-attribute]'));
+                                },
+                              },
+                              {
                                 type: "nestedmenuitem",
                                 text: "Person",
                                 icon: "user",
@@ -122,7 +129,7 @@ const App = () => {
                                     text: "Name",
                                     onAction: () =>
                                       editor.insertContent(
-                                        "<code>[Name]</code>"
+                                        "<code data-attribute='name'>[Name]</code>"
                                       ),
                                   },
                                   {
@@ -130,7 +137,7 @@ const App = () => {
                                     text: "EmailAddress",
                                     onAction: () =>
                                       editor.insertContent(
-                                        "<code>[EmailAddress]</code>"
+                                        "<code data-attribute='email'>[EmailAddress]</code>"
                                       ),
                                   },
                                 ],
