@@ -31,9 +31,9 @@ const App = () => {
     }, 1500);
   };
   const header =
-    "<header contenteditable='false'><div style='height: 150px; font-size: 28px'>Header Section</div></header>";
+    "<header class='mceNonEditable'><div style='height: 150px; font-size: 28px'>Header Section</div></header>";
   const footer =
-    "<footer contenteditable='false'><div style='height: 150px; font-size: 28px'>Footer Section</div></footer>";
+    "<footer class='mceNonEditable'><div style='height: 150px; font-size: 28px'>Footer Section</div></footer>";
   const initialValue = `${header}<p></p><p></p>${footer}`;
   return (
     <Container>
@@ -98,11 +98,57 @@ const App = () => {
                         "undo redo | formatselect | " +
                         "bold italic backcolor | alignleft aligncenter " +
                         "alignright alignjustify | bullist numlist outdent indent | " +
-                        "removeformat remove ",
+                        "removeformat remove | metadata",
                       content_style:
                         "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                      setup: (editor) => {
+                        editor.ui.registry.addMenuButton("metadata", {
+                          icon: "comment-add",
+                          fetch: (callback) => {
+                            const items: any[] = [
+                              {
+                                type: "menuitem",
+                                text: "Header",
+                                onAction: () => editor.insertContent(header),
+                              },
+                              {
+                                type: "nestedmenuitem",
+                                text: "Person",
+                                icon: "user",
+                                getSubmenuItems: () => [
+                                  {
+                                    type: "menuitem",
+                                    text: "Name",
+                                    onAction: () =>
+                                      editor.insertContent(
+                                        "<code>[Name]</code>"
+                                      ),
+                                  },
+                                  {
+                                    type: "menuitem",
+                                    text: "EmailAddress",
+                                    onAction: () =>
+                                      editor.insertContent(
+                                        "<code>[EmailAddress]</code>"
+                                      ),
+                                  },
+                                ],
+                              },
+                              {
+                                type: "menuitem",
+                                text: "Footer",
+                                onAction: () => editor.insertContent(footer),
+                              },
+                            ];
+                            callback(items);
+                          },
+                        });
+                      },
                     }}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.content}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
             </Row>
