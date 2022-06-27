@@ -34,7 +34,7 @@ const App = () => {
     "<header class='mceNonEditable'><div style='height: 150px; font-size: 28px'>Header Section</div></header>";
   const footer =
     "<footer class='mceNonEditable'><div style='height: 150px; font-size: 28px'>Footer Section</div></footer>";
-  const initialValue = `${header}<p><code>email template</code></p><p></p>${footer}`;
+  const initialValue = `${header}<p></p><p id="main"></p><p></p>${footer}`;
   return (
     <Container>
       <Formik
@@ -89,19 +89,41 @@ const App = () => {
                       menubar: false,
                       inline_styles: true,
                       statusbar: false,
+                      //contextmenu_never_use_native: true,
                       plugins: [
                         "advlist autolink lists link image charmap print preview anchor",
                         "searchreplace visualblocks code fullscreen",
-                        "insertdatetime media table paste wordcount",
+                        "insertdatetime media table paste wordcount contextmenu",
                       ],
                       toolbar:
                         "undo redo | formatselect | " +
                         "bold italic backcolor | alignleft aligncenter " +
                         "alignright alignjustify | bullist numlist outdent indent | " +
-                        "removeformat remove | metadata",
+                        "metadata",
                       content_style:
                         "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
                       setup: (editor) => {
+                        editor.ui.registry.addButton("removetoken", {
+                          icon: "remove",
+                          tooltip: "Remove token",
+                          onAction: function () {
+                            const node = editor.selection.getNode();
+                            editor.dom.remove(node);
+                          },
+                        });
+
+                        editor.ui.registry.addContextToolbar("token", {
+                          predicate: function (node) {
+                            return (
+                              node.nodeName === "CODE" &&
+                              node.hasAttribute("data-attribute")
+                            );
+                          },
+                          items: "bold italic backcolor forecolor removetoken",
+                          position: "node",
+                          scope: "node",
+                        });
+
                         editor.ui.registry.addMenuButton("metadata", {
                           icon: "comment-add",
                           tooltip: "Insert dynamic content",
@@ -113,13 +135,6 @@ const App = () => {
                                 onAction: () => editor.insertContent(header),
                               },
                               {
-                                type: "menuitem",
-                                text: "Test",
-                                onAction: () => {
-                                  editor.dom.remove(editor.dom.select('code[data-attribute]'));
-                                },
-                              },
-                              {
                                 type: "nestedmenuitem",
                                 text: "Person",
                                 icon: "user",
@@ -129,15 +144,15 @@ const App = () => {
                                     text: "Name",
                                     onAction: () =>
                                       editor.insertContent(
-                                        "<code data-attribute='name'>[Name]</code>"
+                                        "<code data-attribute='name'>{{Name}}</code>"
                                       ),
                                   },
                                   {
                                     type: "menuitem",
-                                    text: "EmailAddress",
+                                    text: "Email Address",
                                     onAction: () =>
                                       editor.insertContent(
-                                        "<code data-attribute='email'>[EmailAddress]</code>"
+                                        "<code data-attribute='email'>{{EmailAddress}}</code>"
                                       ),
                                   },
                                 ],
