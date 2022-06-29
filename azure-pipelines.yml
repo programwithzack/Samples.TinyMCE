@@ -15,13 +15,22 @@ steps:
     versionSpec: '16.x'
   displayName: 'Install Node.js'
 
-- script: |
-    npm install
-    npm run build
-  displayName: 'npm install and build'
+- task: Npm@1
+  displayName: Npm install for the React App
+  inputs:
+    command: 'install'
+    workingDir: 'WebApp'
+    verbose: false
+
+- task: Npm@1
+  displayName: Build the React App
+  inputs:
+    command: 'custom'
+    workingDir: 'WebApp'
+    customCommand: 'run build'
   
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: 'build'
+    PathtoPublish: 'WebApp/build'
     ArtifactName: 'webapp'
     publishLocation: 'Container'
