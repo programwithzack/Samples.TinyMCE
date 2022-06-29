@@ -3,6 +3,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { Button, Form, Container, Row, Col } from "react-bootstrap";
 import * as yup from "yup";
 import { Formik } from "formik";
+import axios from "axios";
 
 type FormValues = {
   subject: string;
@@ -24,11 +25,15 @@ const App = () => {
   ) => {
     setSubmitting(true);
 
-    setTimeout(() => {
-      console.log(values);
-      resetForm();
-      setSubmitting(false);
-    }, 1500);
+    axios
+      .post("http://localhost:5123/emailtemplates", {
+        subject: values.subject,
+        content: values.content,
+      })
+      .then((result) => {
+        resetForm();
+        setSubmitting(false);
+      });
   };
   const header =
     "<header class='mceNonEditable'><div style='height: 150px; font-size: 28px'>Header Section</div></header>";
@@ -119,7 +124,8 @@ const App = () => {
                               node.hasAttribute("data-attribute")
                             );
                           },
-                          items: "bold italic underline backcolor forecolor removetoken",
+                          items:
+                            "bold italic underline backcolor forecolor removetoken",
                           position: "node",
                           scope: "node",
                         });
