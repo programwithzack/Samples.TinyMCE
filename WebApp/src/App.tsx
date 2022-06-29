@@ -93,12 +93,12 @@ const App = () => {
                       plugins: [
                         "advlist autolink lists link image charmap print preview anchor",
                         "searchreplace visualblocks code fullscreen",
-                        "insertdatetime media table paste wordcount contextmenu",
+                        "insertdatetime media table paste wordcount",
                       ],
                       toolbar:
                         "undo redo | formatselect | " +
-                        "bold italic backcolor | alignleft aligncenter " +
-                        "alignright alignjustify | bullist numlist outdent indent | " +
+                        "bold italic underline backcolor forecolor | alignleft aligncenter alignright alignjustify | " +
+                        "bullist numlist outdent indent | " +
                         "metadata",
                       content_style:
                         "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
@@ -119,7 +119,7 @@ const App = () => {
                               node.hasAttribute("data-attribute")
                             );
                           },
-                          items: "bold italic backcolor forecolor removetoken",
+                          items: "bold italic underline backcolor forecolor removetoken",
                           position: "node",
                           scope: "node",
                         });
