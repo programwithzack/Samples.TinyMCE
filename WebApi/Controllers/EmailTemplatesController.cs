@@ -47,10 +47,10 @@ namespace WebApi.Controllers
                 string content = item.Content;
                 var htmlDoc = new HtmlDocument();
                 htmlDoc.LoadHtml(content);
-                var nodes = htmlDoc.DocumentNode.SelectNodes("//code[@data-attribute]");
-                if (nodes != null)
+                var codeNodes = htmlDoc.DocumentNode.SelectNodes("//code[@data-attribute]");
+                if (codeNodes != null)
                 {
-                    foreach (var node in nodes)
+                    foreach (var node in codeNodes)
                     {
                         string attrName = node.GetAttributeValue("data-attribute", "");
                         var newNode = htmlDoc.CreateTextNode("{{" + attrName + "}}");
