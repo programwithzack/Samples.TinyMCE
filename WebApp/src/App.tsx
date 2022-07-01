@@ -107,6 +107,11 @@ const App = () => {
                         "metadata",
                       content_style:
                         "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                      init_instance_callback: (editor) => {
+                        editor.on('ExecCommand', function(e) {
+                          console.log('The ' + e.command + ' command was fired.');
+                        });
+                      },
                       setup: (editor) => {
                         editor.ui.registry.addButton("removetoken", {
                           icon: "remove",
@@ -159,6 +164,14 @@ const App = () => {
                                     onAction: () =>
                                       editor.insertContent(
                                         "<code data-attribute='email'>{{EmailAddress}}</code>"
+                                      ),
+                                  },
+                                  {
+                                    type: "menuitem",
+                                    text: "Orders",
+                                    onAction: () =>
+                                      editor.insertContent(
+                                        "<table data-attribute='orders'><tr><th>Order ID</th><th>Order Date</th></tr><tr><td><code data-attribute='id'>{{Order ID}}</code></td><td><code data-attribute='date'>{{Order Date}}</code></td></tr></table>"
                                       ),
                                   },
                                 ],
