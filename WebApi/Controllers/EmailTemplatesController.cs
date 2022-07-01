@@ -38,9 +38,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet(Name = "ParseEmailTemplate")]
-        public async Task<IEnumerable<EmailTemplate>> ParseEmailTemplateAsync([FromQuery] Person person)
+        public IEnumerable<EmailTemplate> ParseEmailTemplateAsync([FromQuery] Person person)
         {
-            var json = await _apiUrl.GetJsonAsync<Dictionary<string, EmailTemplate>>();
+            var json = _apiUrl.GetJsonAsync<Dictionary<string, EmailTemplate>>().Result;
             foreach (EmailTemplate item in json.Values)
             {
                 string subject = item.Subject;
