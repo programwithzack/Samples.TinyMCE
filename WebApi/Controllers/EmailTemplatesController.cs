@@ -55,10 +55,10 @@ namespace WebApi.Controllers
                         string attrName = node.GetAttributeValue("data-attribute", "");
                         var newNode = htmlDoc.CreateTextNode("{{" + attrName + "}}");
                         node.ParentNode.ReplaceChild(newNode, node);
-                    }
-                    var template = Handlebars.Compile(htmlDoc.DocumentNode.OuterHtml);
-                    content = template(person);
+                    }                    
                 }
+                var template = Handlebars.Compile(htmlDoc.DocumentNode.OuterHtml);
+                content = template(person);
                 yield return new EmailTemplate
                 {
                     Subject = subject,
